@@ -129,11 +129,58 @@ set_zsh_default() {
     echo -e "${GREEN}✓${NC} Zsh set as default shell"
 }
 
+# Function to install Oh My Zsh
+install_oh_my_zsh() {
+    if [[ -d "$HOME/.oh-my-zsh" ]]; then
+        echo -e "${GREEN}✓${NC} Oh My Zsh is already installed"
+        return 0
+    fi
+
+    echo -e "${YELLOW}Installing Oh My Zsh...${NC}"
+
+    # Use curl or wget depending on what's available
+    if command -v curl &> /dev/null; then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    elif command -v wget &> /dev/null; then
+        sh -c "$(wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    else
+        echo -e "${YELLOW}⚠${NC} Could not install Oh My Zsh (curl or wget required)"
+        return 1
+    fi
+
+    echo -e "${GREEN}✓${NC} Oh My Zsh installed successfully"
+}
+
+# Function to install Powerlevel10k theme
+install_powerlevel10k() {
+    local p10k_path="$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+
+    if [[ -d "$p10k_path" ]]; then
+        echo -e "${GREEN}✓${NC} Powerlevel10k is already installed"
+        return 0
+    fi
+
+    echo -e "${YELLOW}Installing Powerlevel10k theme...${NC}"
+
+    if command -v git &> /dev/null; then
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$p10k_path"
+        echo -e "${GREEN}✓${NC} Powerlevel10k installed successfully"
+    else
+        echo -e "${YELLOW}⚠${NC} Could not install Powerlevel10k (git required)"
+        return 1
+    fi
+}
+
 # Create necessary directories
 echo -e "${BLUE}Setting up directories...${NC}"
 mkdir -p ~/.config/zsh
 mkdir -p ~/.config/vim
 mkdir -p ~/.config/git
+
+# Mark this repository as safe for Git (fixes "dubious ownership" warnings)
+echo -e "\n${BLUE}Setting up Git repository trust...${NC}"
+git config --global --add safe.directory "$DOTFILES_REPO" 2>/dev/null || true
+echo -e "${GREEN}✓${NC} Repository marked as safe for Git operations"
 
 # Create Zsh configuration symlinks
 echo -e "\n${BLUE}Setting up Zsh configuration...${NC}"
@@ -151,23 +198,31 @@ echo -e "\n${BLUE}Setting up Git configuration...${NC}"
 create_symlink "$DOTFILES_REPO/git/gitconfig" ~/.gitconfig "~/.gitconfig"
 
 # Install and configure Zsh
-echo -e "\n${BLUE}Checking shell environment...${NC}"
+echo -e "\n${BLUE}Setting up shell environment...${NC}"
 install_zsh || echo -e "${YELLOW}⚠${NC} Zsh installation failed, but dotfiles are still configured"
 set_zsh_default || echo -e "${YELLOW}⚠${NC} Could not set Zsh as default, but configuration is ready"
+
+# Install Oh My Zsh and Powerlevel10k
+echo -e "\n${BLUE}Installing Oh My Zsh and Powerlevel10k...${NC}"
+install_oh_my_zsh || echo -e "${YELLOW}⚠${NC} Oh My Zsh installation failed, but dotfiles are configured"
+install_powerlevel10k || echo -e "${YELLOW}⚠${NC} Powerlevel10k installation skipped, but Oh My Zsh is ready"
 
 # Success message
 echo -e "\n${GREEN}=== Installation Complete ===${NC}"
 echo -e "${GREEN}✓${NC} Dotfiles have been installed successfully!"
+echo -e "${GREEN}✓${NC} Oh My Zsh and Powerlevel10k configured!"
 echo -e "\n${YELLOW}Next steps:${NC}"
 
 if [ "$SHELL" != "$(command -v zsh)" ]; then
     echo -e "  1. Restart your terminal or run: exec zsh"
-    echo -e "  2. Verify everything works with: zsh"
+    echo -e "  2. Or run: zsh"
 else
     echo -e "  1. Reload your shell configuration: exec zsh"
 fi
 
-echo -e "\n${YELLOW}Optional:${NC}"
-echo -e "  • For Powerlevel10k integration, follow: https://github.com/romkatv/powerlevel10k"
-echo -e "  • Create ~/.zshrc.local for local customizations"
+echo -e "\n${YELLOW}Your new shell includes:${NC}"
+echo -e "  • Powerlevel10k theme with beautiful icons"
+echo -e "  • Git, Python, and Docker plugins"
+echo -e "  • PyQuant aliases and functions"
+echo -e "  • All Git and Vim configurations"
 echo -e "\n"

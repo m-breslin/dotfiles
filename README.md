@@ -42,10 +42,12 @@ The dotfiles include full devcontainer support with automatic setup:
    - In VS Code: Click "Reopen in Container" when prompted
    - Or use the command palette: "Dev Containers: Reopen in Container"
 
-3. **That's it!** The setup runs automatically:
+3. **That's it!** Everything installs automatically:
    - ✓ Zsh is installed and set as default shell
+   - ✓ Oh My Zsh is installed with beautiful configuration
+   - ✓ Powerlevel10k theme with icons
    - ✓ All configurations are symlinked
-   - ✓ All aliases and functions are ready
+   - ✓ All aliases and functions are ready to use
 
 ### 🖥️ Manual Installation (Linux/macOS/WSL)
 
@@ -60,6 +62,8 @@ bash install.sh
 
 **What the install script does:**
 - Installs Zsh if not already available
+- Installs Oh My Zsh with beautiful defaults
+- Installs Powerlevel10k theme for gorgeous terminal icons
 - Creates symlinks for all configuration files
 - Sets Zsh as your default shell
 - Backs up any existing configuration files
@@ -175,6 +179,27 @@ cls()     - Clear screen (cross-platform)
 
 ## Troubleshooting
 
+### Git "Unsafe Repository" Warning
+
+If you see a warning like:
+```
+fatal: detected dubious ownership in repository at '/path/to/repo'
+To add an exception for this directory, call:
+    git config --global --add safe.directory /path/to/repo
+```
+
+**This is resolved automatically** by the install script. Just run:
+```bash
+bash install.sh
+```
+
+This marks the repository as safe so you can work with it without warnings.
+
+If you encounter this before running the install script, you can manually trust it:
+```bash
+git config --global --add safe.directory /path/to/dotfiles
+```
+
 ### Zsh Not Set as Default Shell
 
 **In devcontainer:**
@@ -210,17 +235,25 @@ bash install.sh
 
 ### Powerlevel10k Integration
 
-To add Powerlevel10k prompt support:
+The dotfiles come with **Powerlevel10k** installed and configured by default. It provides:
 
+- 🎨 Beautiful terminal colors with Nerd Font icons
+- 📊 Real-time git status in your prompt
+- ⚡ Fast, responsive terminal experience
+- 🎯 Customizable prompt segments
+
+**You get it automatically!** Just install the dotfiles and you're ready to go.
+
+**To customize your Powerlevel10k prompt:**
 ```bash
-# Install Powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-
-# Set up fonts (download from: https://github.com/romkatv/powerlevel10k#fonts)
-# Then run:
-~/powerlevel10k/powerlevel10k.zsh-theme
-p10k configure  # Run the interactive configuration
+p10k configure
 ```
+
+This opens an interactive wizard. For more details, see: [Powerlevel10k Documentation](https://github.com/romkatv/powerlevel10k)
+
+**Note:** Install a Nerd Font for perfect icon display. Recommended: **MesloLGS NF**
+- [Download Fonts](https://github.com/romkatv/powerlevel10k#fonts)
+- In VS Code: Set `"terminal.integrated.fontFamily": "MesloLGS NF"` in settings
 
 ## Platform Support
 
