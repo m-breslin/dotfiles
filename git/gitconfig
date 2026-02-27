@@ -1,0 +1,18 @@
+[user]
+    name = Michal Breslin
+    email = michalbreslin@outlook.com
+
+[core]
+    editor = vim
+    autocrlf = input    # Converts CRLF to LF on commit; works cross-platform
+    safecrlf = true
+
+[color]
+    ui = auto
+
+[alias]
+    co = checkout
+    br = branch
+    st = status
+    cm = commit
+    lg = log --oneline --graph --decorate
