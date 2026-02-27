@@ -57,9 +57,9 @@ RUN uv venv $HOME/.venv \
 # -----------------------------
 # Copy dotfiles from repo root (dotfiles/)
 # -----------------------------
-COPY zsh/.zshrc $HOME/.zshrc
-COPY zsh/aliases.zsh $HOME/aliases.zsh
-COPY git/gitconfig $HOME/gitconfig
+COPY dotfiles/zsh/.zshrc $HOME/.zshrc
+COPY dotfiles/zsh/aliases.zsh $HOME/aliases.zsh
+COPY dotfiles/git/gitconfig $HOME/gitconfig
 RUN dos2unix $HOME/.zshrc $HOME/aliases.zsh $HOME/gitconfig || true
 
 # -----------------------------
