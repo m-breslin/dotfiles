@@ -1,38 +1,37 @@
 {
-  "name": "PyQuant Dotfiles Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+  "name": "python-devcontainer",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
   },
 
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.makefile-tools",
-        "vim.vim"
+        "ms-python.python",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode",
+        "charliermarsh.ruff",
+        "ms-azuretools.vscode-docker"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
-        "terminal.integrated.profiles.linux": {
-          "zsh": {
-            "path": "/bin/zsh",
-            "args": ["-l"]
-          }
-        }
+        "remote.containers.enableX11Forwarding": false
       }
     }
   },
 
-  "forwardPorts": [],
+  "postCreateCommand": ".devcontainer/postCreate.sh",
 
-  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
 
-  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "runArgs": [
+    "--env", "DISPLAY=",
+    "--env", "WAYLAND_DISPLAY=",
+    "--env", "XDG_RUNTIME_DIR=/tmp"
+  ],
 
-  "mounts": [],
-
-  "containerEnv": {
-    "DOTFILES_REPO": "/workspaces/dotfiles"
-  }
+  "updateRemoteUserUID": true
 }
