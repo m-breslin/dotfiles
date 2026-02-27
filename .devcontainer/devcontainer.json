@@ -16,7 +16,8 @@
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
-        "remote.containers.enableX11Forwarding": false
+        "remote.containers.enableX11Forwarding": false,
+        "terminal.integrated.fontFamily": "MesloLGS NF"
       }
     }
   },

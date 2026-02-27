@@ -12,17 +12,8 @@ Professional dotfiles for Python development → modular Zsh configuration, alia
 - **Aliases (`aliases.zsh`)**  
   Shortcuts for common Git, Docker, and project commands.
 
-- **Functions (`functions.zsh`)**  
-  Reusable shell functions for quick navigation, workflow automation, and development tasks.
-
-- **Prompt Styling (`prompt.zsh`)**  
-  Custom prompt with optional **Powerlevel10k** integration for Git-aware, visually rich prompts.
-
 - **Git Configuration (`gitconfig`)**  
   Standardized Git aliases and settings.
-
-- **Editor Configuration (`.vimrc`)** *(optional)*  
-  Basic Vim setup for consistent editing experience.
 
 ---
 
@@ -90,18 +81,6 @@ The Git configuration is automatically symlinked to `~/.gitconfig`. To customize
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 ```
-
-**View all Git aliases:**
-```bash
-git config --get-regexp alias
-```
-
-**Common Git Aliases Included:**
-- `git co` → `git checkout`
-- `git br` → `git branch`
-- `git st` → `git status`
-- `git cm` → `git commit`
-- `git lg` → `git log --graph --oneline --all`
 
 ### Powerlevel10k Integration
 
