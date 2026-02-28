@@ -40,44 +40,14 @@ The dotfiles include full devcontainer support with automatic setup:
    - ✓ Zsh is installed and set as default shell
    - ✓ Oh My Zsh is installed with beautiful configuration
    - ✓ Powerlevel10k theme with icons
-   - ✓ All configurations are symlinked
    - ✓ All aliases and functions are ready to use
 
 4. **Optional Step: PowerLevel10k Prompt Wizard:**
    - You can either exit immediately for PyQuant Developer Default
    - Or you can go through the prompt wizard and make personal changes. Just make sure the zsh/.p10k.zsh keeps your new changes.
 
-### 🖥️ Manual Installation (Linux/macOS/WSL)
-
-For local development or non-devcontainer environments:
-
-**Quick Install:**
-```bash
-git clone https://github.com/PyQuant/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-bash install.sh
-```
-
-**What the install script does:**
-- Installs Zsh if not already available
-- Installs Oh My Zsh with beautiful defaults
-- Installs Powerlevel10k theme for gorgeous terminal icons
-- Creates symlinks for all configuration files
-- Sets Zsh as your default shell
-- Backs up any existing configuration files
-
-**After installation:**
-```bash
-exec zsh
-```
 
 ## Configuration
-
-### Zsh Setup
-
-The Zsh configuration is modular and automatically loaded from two possible locations:
-- **Symlinked location** (preferred): `~/.config/zsh/`
-- **Direct location**: `$DOTFILES/zsh/`
 
 ### Git Configuration
 
@@ -93,10 +63,10 @@ git config --global user.email "your.email@example.com"
 
 The dotfiles come with **Powerlevel10k** installed and configured by default. It provides:
 
-- 🎨 Beautiful terminal colors with Nerd Font icons
-- 📊 Real-time git status in your prompt
-- ⚡ Fast, responsive terminal experience
-- 🎯 Customizable prompt segments
+- Nice terminal colors with Nerd Font icons
+- Real-time git status in your prompt
+- Fast, responsive terminal experience
+- Customizable prompt segments
 
 **You get it automatically!** Just install the dotfiles and you're ready to go.
 
@@ -170,12 +140,6 @@ Set environment variables:
 }
 ```
 
-Keep postCreateCommand lightweight (dependency install only):
-```
-"postCreateCommand": "pip install -r requirements.txt"
-```
-Tip: Avoid running the web server in postCreateCommand. Use VS Code tasks or docker-compose instead.
-
 **ETL / Data Engineering (Airflow + dbt)**
 
 Recommended changes:
@@ -197,16 +161,6 @@ Add extensions useful for SQL and YAML:
   "redhat.vscode-yaml"
 ]
 ```
-Keep Airflow initialization out of postCreateCommand.
-Prefer:
-```
-Makefile
-
-docker-compose up
-
-explicit setup scripts
-```
-Rule of thumb: postCreateCommand prepares the developer, not the pipeline.
 
 
 ### Contributing
