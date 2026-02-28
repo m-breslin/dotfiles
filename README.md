@@ -1,8 +1,7 @@
-# dotfiles
+# PyQuant Developer - Dotfiles
 
-Professional dotfiles for Python development → modular Zsh configuration, aliases, functions, and prompt styling for devcontainers and local development.
+Professional dotfiles for PyQuant development → modular Zsh configuration, aliases, functions, and prompt styling for devcontainers and local development.
 
----
 
 ## Features
 
@@ -15,11 +14,14 @@ Professional dotfiles for Python development → modular Zsh configuration, alia
 - **Git Configuration (`gitconfig`)**  
   Standardized Git aliases and settings.
 
+- **Copy and Paste Dev Container Setup (`.devcontainer`)**
+  Easy to startup development environment for python projects.
+
 ---
 
 ## Quick Start
 
-### 🐳 Using with Devcontainer (Recommended)
+### Using with Devcontainer (Recommended)
 
 The dotfiles include full devcontainer support with automatic setup:
 
@@ -29,8 +31,9 @@ The dotfiles include full devcontainer support with automatic setup:
    cd dotfiles
    ```
 
-2. **Open in Devcontainer:**
-   - In VS Code: Click "Reopen in Container" when prompted
+2. **Take or Copy .devcontainer:**
+   - Copy or Move the .devcontainer folder into the base of your repo
+   - In VS Code: Click "Reopen in Container" or if you ever made manual changes "Reopenin Container without Cache" when prompted
    - Or use the command palette: "Dev Containers: Reopen in Container"
 
 3. **That's it!** Everything installs automatically:
@@ -39,6 +42,10 @@ The dotfiles include full devcontainer support with automatic setup:
    - ✓ Powerlevel10k theme with icons
    - ✓ All configurations are symlinked
    - ✓ All aliases and functions are ready to use
+
+4. **Optional Step: PowerLevel10k Prompt Wizard:**
+   - You can either exit immediately for PyQuant Developer Default
+   - Or you can go through the prompt wizard and make personal changes. Just make sure the zsh/.p10k.zsh keeps your new changes.
 
 ### 🖥️ Manual Installation (Linux/macOS/WSL)
 
@@ -103,6 +110,104 @@ This opens an interactive wizard. For more details, see: [Powerlevel10k Document
 **Note:** Install a Nerd Font for perfect icon display. Recommended: **MesloLGS NF**
 - [Download Fonts](https://github.com/romkatv/powerlevel10k#fonts)
 - In VS Code: Set `"terminal.integrated.fontFamily": "MesloLGS NF"` in settings
+
+### Devcontainer Customization
+
+This repository includes a **baseline `.devcontainer/devcontainer.json`** designed to work well for most Python projects.  
+You are encouraged to **copy and adapt it per project** rather than treating it as a one-size-fits-all file.
+
+Below are recommended adjustments based on common project types.
+
+---
+
+**Core Sections (What They Do)**
+
+```json
+{
+  "build": { ... },
+  "customizations": { ... },
+  "postCreateCommand": "...",
+  "features": { ... }
+}
+```
+
+**build** →
+Defines the Dockerfile and build context.
+Change this when your project needs system dependencies (Node, Java, Postgres client, etc).
+
+**customizations.vscode** →
+Controls VS Code extensions and editor defaults inside the container.
+This is where you tailor the developer experience per project.
+
+**postCreateCommand** →
+Runs once after the container is created.
+Ideal for installing dependencies, wiring dotfiles, and initializing tooling.
+
+**features** →
+Adds prebuilt capabilities (Docker CLI, GitHub CLI, etc) without bloating your Dockerfile.
+
+**Python Web Applications (Flask / FastAPI / Django)**
+Recommended changes:
+
+Add web-related VS Code extensions:
+```
+"extensions": [
+  "ms-python.python",
+  "ms-python.debugpy",
+  "ms-azuretools.vscode-docker"
+]
+```
+
+Expose ports in devcontainer.json:
+```
+"forwardPorts": [8000]
+```
+Set environment variables:
+```
+"containerEnv": {
+  "FLASK_ENV": "development",
+  "PYTHONUNBUFFERED": "1"
+}
+```
+
+Keep postCreateCommand lightweight (dependency install only):
+```
+"postCreateCommand": "pip install -r requirements.txt"
+```
+Tip: Avoid running the web server in postCreateCommand. Use VS Code tasks or docker-compose instead.
+
+**ETL / Data Engineering (Airflow + dbt)**
+
+Recommended changes:
+
+Use docker-compose instead of a single Dockerfile:
+```
+"dockerComposeFile": ["../docker-compose.yml"],
+"service": "airflow"
+```
+Increase container resources (Airflow is heavy):
+```
+"runArgs": ["--memory=8g"]
+```
+Add extensions useful for SQL and YAML:
+```
+"extensions": [
+  "ms-python.python",
+  "innoverio.vscode-dbt-power-user",
+  "redhat.vscode-yaml"
+]
+```
+Keep Airflow initialization out of postCreateCommand.
+Prefer:
+```
+Makefile
+
+docker-compose up
+
+explicit setup scripts
+```
+Rule of thumb: postCreateCommand prepares the developer, not the pipeline.
+
 
 ### Contributing
 
